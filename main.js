@@ -1,12 +1,32 @@
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET","http://188.226.135.96:9876/json",true);
+/*xhr.open("GET","http://188.226.135.96:9876/json?file=adudar.js",true);*/
+xhr.send();
+var data;
+xhr.onreadystatechange = function(){
+	if(xhr.readyState == 4 && xhr.status == 200){
+		try{
+			data = xhr.responseText;
+		
+		}catch(e){
+			console.log(e);
+		}
+	}
+}
+
+
+
 var footballers = data,
 	head = header,
 	paginator = document.getElementById('paginator'),
 	container = document.getElementById('container'),
 	tableContainer = [],
-	step = +prompt("How much items do you want to see on one page"),
+	step = 5/*+prompt("How much items do you want to see on one page")*/,
 	start = 0, 
 	end = step;
 
+//create table, fill thead and create empty tbody
 function createTable(container,head){
     var table = document.createElement('table'),
     	thead = document.createElement('thead');
@@ -16,6 +36,7 @@ function createTable(container,head){
 
     	var obj = head[i];
     	for(var key in obj){
+    		//add class header-select for selective items
     		if(key != 'number' && key != 'image'){
     			titleNames += '<th class="header-select" data-sort="' + key + '">' + obj[key] + '</th>';
     		}else{
@@ -35,6 +56,7 @@ function createTable(container,head){
     createPaginator();
 };
 
+//dynamic paginator, create pages items
 function createPaginator(){
 
     pageAmount = Math.ceil((footballers.length / step));
@@ -57,6 +79,7 @@ var lastTarget;
 var lastSelected;
 
 
+//fill tableContainer with already ready rows for inserting
 function fillContainer(arr){
 	var trContent;
     for(var i = 0,max = arr.length; i < max; i++){
@@ -78,7 +101,7 @@ function fillContainer(arr){
     
 }
 
-   
+// sort array
 function sortArray(arr,name){
 
     function compareNumbers(a,b){
@@ -100,7 +123,7 @@ function sortArray(arr,name){
 }	
 
 
-
+//fill tbody from tableContainer
 function fillTable(arr,start,end){
 
   var	tbody = table.querySelector('tbody');
@@ -119,35 +142,31 @@ function fillTable(arr,start,end){
 };
 
 container.onclick = function(e){
-
+//additional function for removing arrow
 	function removeArrow(t){
 		t.removeChild(target.childNodes[1]);
 	}
 
 	var target = e.target;
 	
-	//prevent clicking on cell '№' and 'Image'
+	//check if it is a th with .header-select class
 	if(target.closest('.header-select')){
     	
-    //if it is a second click on the same cell
-    //reverse array with users
-    //and create table
+    
 	
     
 		if(lastSelected && lastSelected.childNodes[1] !== undefined){
-		try{
 			lastSelected.childNodes[1].innerHTML = '';
-		}catch(e){
-			console.log(e);
-		}
-		
-	}
+		};
+
 		if(target.children.length !== 0){
 			removeArrow(target);
 		}
 
 		var span = document.createElement('span');
 
+		//if it is a second click on the same cell
+    	//reverse array with users, change arrow
 		if(lastTarget && lastTarget.innerHTML == target.innerHTML){
 			
 			span.innerHTML = '  &#8595;';
@@ -160,14 +179,11 @@ container.onclick = function(e){
 		}
 
 
-
+		//append arrow
 		target.appendChild(span);
-		//remember the last chosen cell
-		//and create table
 		
 		tableContainer = [];
 		
-
 		fillContainer(footballers);
 
 		fillTable(tableContainer,start,end);
@@ -195,9 +211,7 @@ paginator.onclick = function(e){
    
 	if(target.closest('.page')){
 		clearActivePage();
-target.onselect = function(){
-  return false;
-}
+
 		if(start >= 0){
 			start = (+target.innerHTML-1) * step;
 		}

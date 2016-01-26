@@ -5,6 +5,7 @@ table{
 }
 body{
 	width: 1250px;
+	margin: 0 auto;
 }
 td, th{
 	padding: 10px;
@@ -34,7 +35,7 @@ tr:nth-child(even){
 }
 #container{
 	width: 800px;
-	height: 600px;
+	height: 900px;
 	margin: 0 auto;
 }
 /*
