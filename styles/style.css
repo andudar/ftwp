@@ -1,3 +1,24 @@
+html,
+body{
+    height: 100%;
+}
+/*
+* wrapper for all page (like body)
+*/
+.wrapper{
+    display: table;
+		margin: 0 auto;
+    min-height: 100%;
+}
+/*
+* page-container - inside wrapper without #paginator
+* #paginator is separate from page-container
+*/
+.page-container{
+    display: table-row;
+    height: 100%;
+ }
+
 table{
 	border: 2px solid black;
 	border-collapse: collapse;
@@ -35,18 +56,15 @@ tr:nth-child(even){
 }
 #container{
 	width: 800px;
-	height: 900px;
 	margin: 0 auto;
 }
-/*
- *additional id for redefine tr:nth-child(even) selector
-*/
 tbody tr:hover{
 	background-color: lightgrey;
 }
 
 #paginator{
 	margin: 0 auto;
+	margin-bottom: 15px;
 }
 #paginator span{
 	display: inline-block;
@@ -56,6 +74,20 @@ tbody tr:hover{
 	margin: 5px;
 	cursor: pointer;
 }
+/*prevent select for span*/
+#paginator span {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* IE/Edge */
+  user-select: none;           /* non-prefixed version, currently
+                               not supported by any browser */
+}
 .active-page{
 	background-color: lightgrey;
+}
+.previous:active,
+.next:active{
+	background-color: #e1337a;
 }

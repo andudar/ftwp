@@ -1,28 +1,9 @@
-
-var xhr = new XMLHttpRequest();
-xhr.open("GET","http://188.226.135.96:9876/json",true);
-/*xhr.open("GET","http://188.226.135.96:9876/json?file=adudar.js",true);*/
-xhr.send();
-var data;
-xhr.onreadystatechange = function(){
-	if(xhr.readyState == 4 && xhr.status == 200){
-		try{
-			data = xhr.responseText;
-		
-		}catch(e){
-			console.log(e);
-		}
-	}
-}
-
-
-
 var footballers = data,
 	head = header,
 	paginator = document.getElementById('paginator'),
 	container = document.getElementById('container'),
 	tableContainer = [],
-	step = 5/*+prompt("How much items do you want to see on one page")*/,
+	step = 2/*+prompt("How much items do you want to see on one page")*/,
 	start = 0, 
 	end = step;
 
@@ -46,36 +27,42 @@ function createTable(container,head){
     	}
     	
     }
+    //close row
     titleNames += '</tr>';
+
     thead.innerHTML = titleNames;
     table.appendChild(thead);
+
     var tbody = document.createElement('tbody');
     table.appendChild(tbody);
+
     container.appendChild(table);
 
     createPaginator();
 };
 
-//dynamic paginator, create pages items
+//dynamic paginator, create paginator's items
 function createPaginator(){
 
     pageAmount = Math.ceil((footballers.length / step));
     for(var i = 1; i < pageAmount+1; i++){
     	var span = document.createElement('span');
-    	span.classList.add('page');
-    	span.classList.add('page-' + i)
     	span.innerHTML = i;
+    	span.classList.add('page', 'page-' + i);
     	paginator.insertBefore(span,paginator.lastElementChild);
     }
     paginator.querySelector('.page-1').classList.add('active-page');
-    paginator.style.width = pageAmount * 45 + (47*2) + 'px';
-}
+    //automatic set width for paginator, depends on amount of items
+    paginator.style.width = pageAmount * 45 + (45*2) + 'px';
+};
 
-
+//create table with bootstrap
 createTable(container,head);
 
 var table = document.querySelector('table');
+//remember last target to check if it's a second click
 var lastTarget;
+//remember last selected th for removing previous arrow
 var lastSelected;
 
 
@@ -99,9 +86,8 @@ function fillContainer(arr){
     	tableContainer.push(tr);
     }
     
-}
+};
 
-// sort array
 function sortArray(arr,name){
 
     function compareNumbers(a,b){
@@ -110,8 +96,6 @@ function sortArray(arr,name){
     function compareStrings(a,b){
     	var a = a[name],
 			b = b[name];
-			/*
-			  console.log(a,b);*/
 			return a > b? 1: a < b? -1: 0;
     };
 
@@ -120,10 +104,10 @@ function sortArray(arr,name){
 	}else{
 		arr.sort(compareStrings);
 	}
-}	
+};
 
 
-//fill tbody from tableContainer
+//fill tbody from tableContainer from start to end
 function fillTable(arr,start,end){
 
   var	tbody = table.querySelector('tbody');
@@ -149,16 +133,17 @@ container.onclick = function(e){
 
 	var target = e.target;
 	
-	//check if it is a th with .header-select class
+	//check if it's a selective th with a .header-select class
 	if(target.closest('.header-select')){
     	
     
 	
-    
+    //remove arrow from previous element th
 		if(lastSelected && lastSelected.childNodes[1] !== undefined){
 			lastSelected.childNodes[1].innerHTML = '';
 		};
 
+		//remove arrow from cuurent element th
 		if(target.children.length !== 0){
 			removeArrow(target);
 		}
@@ -166,7 +151,7 @@ container.onclick = function(e){
 		var span = document.createElement('span');
 
 		//if it is a second click on the same cell
-    	//reverse array with users, change arrow
+    //reverse array with users, change arrow
 		if(lastTarget && lastTarget.innerHTML == target.innerHTML){
 			
 			span.innerHTML = '  &#8595;';
@@ -181,7 +166,7 @@ container.onclick = function(e){
 
 		//append arrow
 		target.appendChild(span);
-		
+		//empty container
 		tableContainer = [];
 		
 		fillContainer(footballers);
@@ -220,10 +205,11 @@ paginator.onclick = function(e){
 		currentPage = start/step + 1;
 
 		fillTable(tableContainer, start, end);
-	}
+	};
 
 
 	if(target.closest('.next')){
+		//prevent extra move
 		if(start >= tableContainer.length - step){
 			return;
 		}
@@ -242,7 +228,7 @@ paginator.onclick = function(e){
 	if(target.closest('.previous')){
 		start = start - step;
 		end = end - step;
-
+		//prevent extra move
 		if(start < 0){
 			start = 0;
 			end = 5;
@@ -266,9 +252,9 @@ function clearActivePage(){
 		max = pages.length;
 	for(;max--;){
 		pages[max].classList.remove('active-page');
-	};
-}
+	}
+};
 
-
+//fill container and fill table with bootstap
 fillContainer(footballers);
 fillTable(tableContainer,start,step);

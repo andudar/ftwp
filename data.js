@@ -7,7 +7,7 @@ var header = [
 {club: 'Club'},
 {position: 'Position'},
 {image: 'Image'}
-]
+];
 var data = [
 {
 	name: 'James',
