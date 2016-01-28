@@ -6,6 +6,11 @@ var footballers = data,
 	step = 2/*+prompt("How much items do you want to see on one page")*/,
 	start = 0, 
 	end = step;
+//make copy of main array footballers for safe work with array
+	var footballersCopy = [];
+	footballers.forEach(function(item){
+		footballersCopy.push(item);
+	});
 
 //create table, fill thead and create empty tbody
 function createTable(container,head){
@@ -38,13 +43,13 @@ function createTable(container,head){
 
     container.appendChild(table);
 
-    createPaginator();
+    createPaginator(footballersCopy);
 };
 
 //dynamic paginator, create paginator's items
-function createPaginator(){
+function createPaginator(arr){
 
-    pageAmount = Math.ceil((footballers.length / step));
+    pageAmount = Math.ceil((arr.length / step));
     for(var i = 1; i < pageAmount+1; i++){
     	var span = document.createElement('span');
     	span.innerHTML = i;
@@ -54,6 +59,14 @@ function createPaginator(){
     paginator.querySelector('.page-1').classList.add('active-page');
     //automatic set width for paginator, depends on amount of items
     paginator.style.width = pageAmount * 45 + (45*2) + 'px';
+};
+
+function removePaginator(){
+	var pages = paginator.getElementsByClassName('page');
+	var arr = [].slice.call(pages);
+	arr.forEach(function(item){
+		item.parentNode.removeChild(item);
+	})
 };
 
 //create table with bootstrap
@@ -69,14 +82,14 @@ var lastSelected;
 //fill tableContainer with already ready rows for inserting
 function fillContainer(arr){
 	var trContent;
-    for(var i = 0,max = arr.length; i < max; i++){
+    arr.forEach(function(item, i){
     	trContent = '<tr>';
     	trContent += '<td>' + (i + 1) + '</td>';
-    	for(var key in arr[i]){
+    	for(var key in item){
     		if(key == 'image'){
-    			trContent += '<td><img src="' + arr[i][key] + '" title="' + arr[i].name + ' ' + arr[i].lastName + '"width="75" height="75" <td>';
+    			trContent += '<td><img src="' + item[key] + '" title="' + item.name + ' ' + item.lastName + '"width="75" height="75" <td>';
     		}else{
-    			trContent += '<td>' + arr[i][key] + '</td>';
+    			trContent += '<td>' + item[key] + '</td>';
     		}
     	}
     	trContent += '</tr>';
@@ -84,8 +97,8 @@ function fillContainer(arr){
     	tr.innerHTML = trContent;
     	trContent = '';
     	tableContainer.push(tr);
-    }
-    
+    });
+   
 };
 
 function sortArray(arr,name){
@@ -155,12 +168,12 @@ container.onclick = function(e){
 		if(lastTarget && lastTarget.innerHTML == target.innerHTML){
 			
 			span.innerHTML = '  &#8595;';
-			footballers.reverse();
+			footballersCopy.reverse();
 			lastTarget = null;
 		}else{
 			span.innerHTML = '  &#8593;';
 			lastTarget = target;
-			sortArray(footballers,target.dataset.sort);
+			sortArray(footballersCopy,target.dataset.sort);
 		}
 
 
@@ -169,7 +182,7 @@ container.onclick = function(e){
 		//empty container
 		tableContainer = [];
 		
-		fillContainer(footballers);
+		fillContainer(footballersCopy);
 
 		fillTable(tableContainer,start,end);
 
@@ -256,5 +269,82 @@ function clearActivePage(){
 };
 
 //fill container and fill table with bootstap
-fillContainer(footballers);
-fillTable(tableContainer,start,step);
+fillContainer(footballersCopy);
+fillTable(tableContainer,start,end);
+
+
+//filter
+var search = document.getElementsByClassName('search')[0],
+	filter = document.querySelector('.filter'),
+	clearFilter = document.querySelector('.clear-filter');
+
+search.onkeydown = function(){
+	tableContainer = [];
+	//get back full array of footballers
+	footballersCopy = footballers;
+
+	fillContainer(footballersCopy);
+	removePaginator();
+	createPaginator(footballersCopy);
+	fillTable(tableContainer,start,end);
+};
+
+filter.onclick = function(){
+	//initialize empty array for sorted items
+	var filtered = [];
+	var value = search.value;
+	if(!value) return;
+	//make regular expression for search-field
+	var r = new RegExp(value);
+	//variable for checking element of array
+	var ok = false;
+
+	footballersCopy.forEach(function(item){
+		var obj = item;
+		for(var key in obj){
+			if(key == 'image') continue;
+
+			if(r.test(obj[key])){
+				ok = true;
+				break;
+			}else continue;
+
+		}
+
+		if(ok){
+				filtered.push(obj);
+			}
+			ok = false;
+	});
+
+tableContainer = [];
+footballersCopy = filtered;
+fillContainer(footballersCopy);
+removePaginator();
+
+if(filtered.length){
+	createPaginator(footballersCopy);
+}else{
+	//align center for paginator block
+	paginator.style.width = '90px';
+}
+start = 0;
+end = step;
+fillTable(tableContainer,start,end);
+//check regExp
+console.log(r);
+};
+
+clearFilter.onclick = function(){
+	search.value = '';
+	start = 0;
+	end = step;
+	tableContainer = [];
+	//get back full array of footballers
+	footballersCopy = footballers;
+
+	fillContainer(footballersCopy);
+	removePaginator();
+	createPaginator(footballersCopy);
+	fillTable(tableContainer,start,end);
+}
