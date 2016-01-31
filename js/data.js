@@ -1,4 +1,7 @@
-var header = [
+define(function(){
+	
+var data = [
+[
 {number: '№'},
 {name: 'Name'},
 {lastName: 'Last Name'},
@@ -7,8 +10,7 @@ var header = [
 {club: 'Club'},
 {position: 'Position'},
 {image: 'Image'}
-];
-var data = [
+],
 {
 	name: 'James',
 	lastName: 'Rodrigues',
@@ -127,3 +129,6 @@ var data = [
 	image: 'images/Kroos.png'
 },
 ];
+
+return data;
+})
