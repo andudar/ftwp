@@ -1,5 +1,6 @@
 define(function(){
 
+//fill tableContainer with already ready rows for inserting
 	function fillContainer(arr,tableContainer){
 	var trContent;
     arr.forEach(function(item, i){

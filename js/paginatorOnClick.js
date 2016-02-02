@@ -1,8 +1,10 @@
 define(['fillTable','clearActivePage'],function(fillTable,clearActivePage){
 
-	function paginator(e,table,step,start,end,tableContainer,paginator){
+	function paginator(e,table,step,nav,tableContainer,o){
 	var currentPage;
 	var target = e.target;
+	var start = nav.start,
+		end = nav.end;
 
 	if(target.nodeName != 'SPAN'){
 		return;
@@ -17,8 +19,9 @@ define(['fillTable','clearActivePage'],function(fillTable,clearActivePage){
 		
 		end = start + step;
 		currentPage = start/step + 1;
-
-		fillTable(tableContainer,table, start, end);
+		nav.start = start;
+	nav.end = end;
+		fillTable(tableContainer,table, nav);
 	};
 
 
@@ -33,8 +36,9 @@ define(['fillTable','clearActivePage'],function(fillTable,clearActivePage){
 		end = start + step;
 
 		currentPage = start/step + 1;
-
-		fillTable(tableContainer,table, start, end);
+		nav.start = start;
+		nav.end = end;
+		fillTable(tableContainer,table, nav);
 	};
 
 
@@ -50,15 +54,18 @@ define(['fillTable','clearActivePage'],function(fillTable,clearActivePage){
 		}
 		clearActivePage();
 		currentPage = start/step + 1;
-
-	fillTable(tableContainer,table, start, end);
+		nav.start = start;
+		nav.end = end;
+	fillTable(tableContainer,table, nav);
 	}
 
-	var nowWeAreHere = paginator.querySelector('.page-' + currentPage);
+	var nowWeAreHere = document.getElementById('paginator').querySelector('.page-' + currentPage);
 	if(nowWeAreHere){
 		nowWeAreHere.classList.add('active-page');
 	}
-    
+	nav.start = start;
+	nav.end = end;
+
 };
 
 	return paginator;

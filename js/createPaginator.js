@@ -1,7 +1,9 @@
 define(function(){
+    //dynamic paginator, create paginator's items
 
     function createPaginator(arr,step){
 
+    paginator = document.getElementById('paginator');
     pageAmount = Math.ceil((arr.length / step));
     for(var i = 1; i < pageAmount+1; i++){
         var span = document.createElement('span');

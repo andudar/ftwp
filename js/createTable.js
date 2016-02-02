@@ -1,5 +1,6 @@
 define(['createPaginator'],function(createPaginator){
 
+//create table, fill thead and create empty tbody
     function createTable(container,head,footballersCopy,step){
     var table = document.createElement('table'),
         thead = document.createElement('thead');

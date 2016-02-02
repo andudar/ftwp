@@ -1,25 +1,33 @@
-require(['data','createPaginator','createTable','fillTable','fillContainer','removePaginator','paginatorOnClick','../libs/jquery'], function(data,createPaginator,createTable,fillTable,fillContainer,removePaginator,paginatorOnClick,$){
-
+require(['data',
+	'createPaginator',
+	'createTable',
+	'fillTable',
+	'fillContainer',
+	'removePaginator',
+	'paginatorOnClick',
+	'sortArray'], 
+	function(
+		data,
+		createPaginator,
+		createTable,
+		fillTable,
+		fillContainer,
+		removePaginator,
+		paginatorOnClick,
+		sortArray){
 var 
 	head = data.shift(),
 	footballers = data,
 	paginator = document.getElementById('paginator'),
 	container = document.getElementById('container'),
 	tableContainer = [],
-	step = 3/*+prompt("How much items do you want to see on one page")*/,
-	start = 0, 
-	end = step;
+	step = 3,/*+prompt("How much items do you want to see on one page")*/
+	nav = {start: 0, end: step};
 //make copy of main array footballers for safe work with array
 	var footballersCopy = [];
 	footballers.forEach(function(item){
 		footballersCopy.push(item);
 	});
-
-//create table, fill thead and create empty tbody
-
-
-//dynamic paginator, create paginator's items
-
 
 
 //create table with bootstrap
@@ -31,47 +39,22 @@ var lastTarget;
 //remember last selected th for removing previous arrow
 var lastSelected;
 
-
-//fill tableContainer with already ready rows for inserting
-
-
-function sortArray(arr,name){
-
-    function compareNumbers(a,b){
-    	return b[name] - a[name];
-    }
-    function compareStrings(a,b){
-    	var a = a[name],
-			b = b[name];
-			return a > b? 1: a < b? -1: 0;
-    };
-
-    if(typeof arr[0][name] == 'number'){
-	    arr.sort(compareNumbers);
-	}else{
-		arr.sort(compareStrings);
-	}
-};
-
-
-//fill tbody from tableContainer from start to end
-
-
 container.onclick = function(e){
 //additional function for removing arrow
 	function removeArrow(t){
-		t.removeChild(target.childNodes[1]);
+		t.removeChild(t.childNodes[1]);
 	}
 
 	var target = e.target;
-	
 	//check if it's a selective th with a .header-select class
 	if(target.closest('.header-select')){
-    	
-    
-	
-    //remove arrow from previous element th
-		if(lastSelected && lastSelected.childNodes[1] !== undefined){
+
+  while(target.nodeName != 'TH'){
+    target = target.parentNode;
+  }
+
+  //remove arrow from previous element th
+		if(lastSelected){
 			lastSelected.childNodes[1].innerHTML = '';
 		};
 
@@ -79,6 +62,8 @@ container.onclick = function(e){
 		if(target.children.length !== 0){
 			removeArrow(target);
 		}
+
+
 
 		var span = document.createElement('span');
 
@@ -91,9 +76,9 @@ container.onclick = function(e){
 			lastTarget = null;
 		}else{
 			span.innerHTML = '  &#8593;';
-			lastTarget = target;
-			sortArray(footballersCopy,target.dataset.sort);
-		}
+      lastTarget = target;
+      sortArray(footballersCopy,target.dataset.sort);
+    }
 
 
 		//append arrow
@@ -102,25 +87,25 @@ container.onclick = function(e){
 		tableContainer = [];
 		
 		fillContainer(footballersCopy,tableContainer);
-
-		fillTable(tableContainer,table,start,end);
+		fillTable(tableContainer,table,nav);
 
 		lastSelected = target;
     	
 
     }else return;
+    
 
 };
 
 
 paginator.onclick = function(e){
-	paginatorOnClick(e,table,step,start,end,tableContainer,paginator);
+	paginatorOnClick(e,table,step,nav,tableContainer);
 };
 
 
 //fill container and fill table with bootstap
 fillContainer(footballersCopy,tableContainer);
-fillTable(tableContainer,table,start,end);
+fillTable(tableContainer,table,nav);
 
 
 //filter
@@ -136,7 +121,7 @@ search.onkeydown = function(){
 	fillContainer(footballersCopy,tableContainer);
 	removePaginator(paginator);
 	createPaginator(footballersCopy,step);
-	fillTable(tableContainer,table,start,end);
+	fillTable(tableContainer,table,nav);
 };
 
 filter.onclick = function(){
@@ -178,17 +163,16 @@ if(filtered.length){
 	//align center for paginator block
 	paginator.style.width = '90px';
 }
-start = 0;
-end = step;
-fillTable(tableContainer,table,start,end);
-//check regExp
-console.log(r);
+nav.start = 0;
+nav.end = step;
+fillTable(tableContainer,table,nav);
 };
+
 
 clearFilter.onclick = function(){
 	search.value = '';
-	start = 0;
-	end = step;
+	nav.start = 0;
+	nav.end = step;
 	tableContainer = [];
 	//get back full array of footballers
 	footballersCopy = footballers;
@@ -196,7 +180,7 @@ clearFilter.onclick = function(){
 	fillContainer(footballersCopy,tableContainer);
 	removePaginator(paginator);
 	createPaginator(footballersCopy,step);
-	fillTable(tableContainer,table,start,end);
+	fillTable(tableContainer,table,nav);
 }
 
-})
+});

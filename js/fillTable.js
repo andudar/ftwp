@@ -1,5 +1,8 @@
 define(function(){
-	function fillTable(arr,table,start,end){
+//fill tbody from tableContainer from start to end
+	function fillTable(arr,table,nav){
+		var start = nav.start,
+			end = nav.end;
 
   var	tbody = table.querySelector('tbody');
 	tbody.innerHTML = '';
