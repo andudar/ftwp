@@ -1,23 +1,29 @@
-define(['createPaginator'],function(createPaginator){
+define(['paginator','dataFront','fillTable'], function(paginator, dataFront, fillTable){
+
+//it's neccessary for bootstrap
+  var footballersCopy = dataFront.footballersCopy,
+    head = dataFront.head;
 
 //create table, fill thead and create empty tbody
-    function createTable(container,head,footballersCopy,step){
-    var table = document.createElement('table'),
-        thead = document.createElement('thead');
+  function createTable(){
+
+    var container = document.getElementById('container'),
+    table = document.createElement('table'),
+    thead = document.createElement('thead');
 
     var titleNames = '<tr>';
     for(var i = 0; i < head.length; i++){
 
-        var obj = head[i];
-        for(var key in obj){
-            //add class header-select for selective items
-            if(key != 'number' && key != 'image'){
-                titleNames += '<th class="header-select" data-sort="' + key + '">' + obj[key] + '</th>';
-            }else{
-                titleNames += '<th data-sort="' + key + '">' + obj[key] + '</th>';
-            }
-            
+      var obj = head[i];
+      for(var key in obj){
+        //add class header-select for selective items
+        if(key != 'number' && key != 'image'){
+          titleNames += '<th class="header-select" data-sort="' + key + '">' + obj[key] + '</th>';
+        }else{
+          titleNames += '<th data-sort="' + key + '">' + obj[key] + '</th>';
         }
+            
+      }
         
     }
     //close row
@@ -28,11 +34,13 @@ define(['createPaginator'],function(createPaginator){
 
     var tbody = document.createElement('tbody');
     table.appendChild(tbody);
-
     container.appendChild(table);
 
-    createPaginator(footballersCopy,step);
-};
+    /*var createPaginator = paginator.createPaginator;
+    createPaginator*/
+    paginator(footballersCopy);
+    fillTable(true, footballersCopy);
+  };
 
-    return createTable;
+  return createTable;
 })

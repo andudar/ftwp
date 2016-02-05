@@ -1,21 +1,22 @@
 define(function(){
-	function sortArray(arr,name){
+	function sortArray(arr,field){
 
     function compareNumbers(a,b){
-    	return b[name] - a[name];
-    }
+    	return b[field] - a[field];
+    };
+
     function compareStrings(a,b){
-    	var a = a[name],
-			b = b[name];
+    	var a = a[field],
+			b = b[field];
 			return a > b? 1: a < b? -1: 0;
     };
 
-    if(typeof arr[0][name] == 'number'){
+    if(typeof arr[0][field] == 'number'){
 	    arr.sort(compareNumbers);
-	}else{
-		arr.sort(compareStrings);
-	}
-};
+    }else {
+		  arr.sort(compareStrings);
+    }
+  };
 
 	return sortArray;
 })
