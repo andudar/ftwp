@@ -21,14 +21,14 @@ body{
 .page-container{
   display: table-row;
   height: 100%;
+  width: 1250px;
+  margin: 0 auto;
  }
 .container{
 	margin: 0 auto;
-	max-width: 940px;
 }
 
 .filter-container{
- 	width: 100%;
  	font-size: 0;
  	margin-bottom: 15px;
  	margin-top: 15px;
@@ -64,36 +64,9 @@ body{
 	padding-left: 13px;
 	padding-right: 13px;
 }
-
-table{
-	width: 100%;
-	border: 2px solid black;
-	border-collapse: collapse;
-	margin-bottom: 25px;
-}
-.page-container{
-	width: 1250px;
-	margin: 0 auto;
-}
-td, th{
-	padding: 10px;
-	border: 1px solid black;
-	text-align: center;
-}
-th{
-	cursor: pointer;
-	background-color: #d1d1ff;
-}
-tr:nth-child(even){
-	background-color: #e5f3f1;
-}
 #container{
-	width: 800px;
+	width: 960px;
 }
-tbody tr:hover{
-	background-color: lightgrey;
-}
-
 #paginator{
 	margin: 0 auto;
 	margin-bottom: 15px;
@@ -107,7 +80,8 @@ tbody tr:hover{
 	cursor: pointer;
 }
 /*prevent select for span*/
-#paginator span {
+#paginator span,
+.header li {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none;   /* Chrome/Safari/Opera */
   -khtml-user-select: none;    /* Konqueror */
@@ -122,4 +96,45 @@ tbody tr:hover{
 .previous:active,
 .next:active{
 	background-color: #e1337a;
+}
+
+ul{
+	list-style: none;
+  width: 100%;
+	padding: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+	margin: 0;
+}
+li{
+	display: inline-block;
+	width: 13.42857142857143%;/*divide the remaining widthfor seven cols*/
+  margin: 0;
+	text-align: center;
+	vertical-align: middle;
+}
+li:first-child{
+  width: 6%;/*this field can be less wide*/
+}
+.header{
+	padding: 0.25%;
+	font-weight: bold;
+	border: 1px solid blue;
+	cursor: pointer;
+	background-color: #d1d1ff;
+}
+.header-row{
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.row:nth-child(even){
+	background-color: #e5f3f1;
+}
+.body{
+	border: 1px solid blue;
+	border-top: none;
+}
+.body .row:hover{
+	background-color: lightgrey;
 }

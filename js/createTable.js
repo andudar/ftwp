@@ -1,46 +1,48 @@
 define(['paginator','dataFront','fillTable'], function(paginator, dataFront, fillTable){
 
-//it's neccessary for bootstrap
-  var footballersCopy = dataFront.footballersCopy,
-    head = dataFront.head;
+//it's necessary for bootstrap
+  var head = dataFront.head;
 
-//create table, fill thead and create empty tbody
+//create table, fill head and create empty body
   function createTable(){
 
-    var container = document.getElementById('container'),
-    table = document.createElement('table'),
-    thead = document.createElement('thead');
+    var 
+      container = document.getElementById('container'),
+      table = document.createElement('div'),
+      tableHead = document.createElement('div');
+      tableHead.classList.add('header');
 
-    var titleNames = '<tr>';
+    table.classList.add('table');
+
+    var titleNames = '<ul class="header-row">';
     for(var i = 0; i < head.length; i++){
 
       var obj = head[i];
       for(var key in obj){
         //add class header-select for selective items
         if(key != 'number' && key != 'image'){
-          titleNames += '<th class="header-select" data-sort="' + key + '">' + obj[key] + '</th>';
+          titleNames += '<li class="header-select" data-sort="' + key + '">' + obj[key] + '</li>';
         }else{
-          titleNames += '<th data-sort="' + key + '">' + obj[key] + '</th>';
+          titleNames += '<li data-sort="' + key + '">' + obj[key] + '</li>';
         }
             
       }
         
     }
     //close row
-    titleNames += '</tr>';
+    titleNames += '</ul>';
 
-    thead.innerHTML = titleNames;
-    table.appendChild(thead);
+    tableHead.innerHTML = titleNames;
+    table.appendChild(tableHead);
 
-    var tbody = document.createElement('tbody');
-    table.appendChild(tbody);
+    var body = document.createElement('div');
+    body.classList.add('body');
+    table.appendChild(body);
     container.appendChild(table);
 
-    /*var createPaginator = paginator.createPaginator;
-    createPaginator*/
-    paginator(footballersCopy);
-    fillTable(true, footballersCopy);
-  };
+    paginator(dataFront.footballersCopy);
+    fillTable(true, dataFront.footballersCopy);
+  }
 
   return createTable;
-})
+});

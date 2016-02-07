@@ -1,15 +1,19 @@
 define(['data'], function(data){
+	//emulation receiving data from server
 	var 
-	head = data.shift(),
-	footballers = data,
+		head = data.shift(),
+    footballers = data,
+    //make copy of main array footballers for safe work with array
+    footballersCopy = [];
 
-	//make copy of main array footballers for safe work with array
-	footballersCopy = [];
 	footballers.forEach(function(item){
 		footballersCopy.push(item);
 	});
 
-	var dataObj = {head: head, footballersCopy: footballersCopy, original: footballers}
+	return {
+    head: head,
+    footballersCopy: footballersCopy,
+    original: footballers
+    };
 
-	return dataObj;
 });

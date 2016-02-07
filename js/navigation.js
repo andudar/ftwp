@@ -1,7 +1,10 @@
 define(function(){
-	step = 3;
-	nav = {step:step,start: 0, end: step};
+  var step = 5;
 
-	return nav;
+  return {
+    step:step,
+    start: 0,
+    end: step
+  };
 
 });
