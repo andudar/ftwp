@@ -9,9 +9,7 @@ define(function(){
 
       if(clean){
         tableContainer = [];
-        console.log("clean");
       }else {
-        console.log("didn't change");
         return tableContainer;
       }
 
@@ -23,7 +21,7 @@ define(function(){
         trContent += '<li>' + (i + 1) + '</li>';
         for(var key in item){
           if(key == 'image'){
-            trContent += '<li><img src="' + item[key] + '" title="' + item.name + ' ' + item.lastName + '"width="75" height="75" </li>';
+            trContent += '<li><img src="' + item[key] + '" title="' + item.name + ' ' + item.lastName + '"/> </li>';
           }else{
             trContent += '<li>' + item[key] + '</li>';
           }

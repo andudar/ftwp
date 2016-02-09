@@ -10,9 +10,12 @@ body{
 * wrapper for all page (like body)
 */
 .wrapper{
-  display: table;
+	display: table;
 	margin: 0 auto;
-  min-height: 100%;
+	max-width: 960px;
+	width: 100%;
+	table-layout: fixed;
+	min-height: 100%;
 }
 /*
 * page-container - inside wrapper without #paginator
@@ -65,7 +68,7 @@ body{
 	padding-right: 13px;
 }
 #container{
-	width: 960px;
+	max-width: 960px;
 }
 #paginator{
 	margin: 0 auto;
@@ -100,7 +103,6 @@ body{
 
 ul{
 	list-style: none;
-  width: 100%;
 	padding: 0;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -108,10 +110,14 @@ ul{
 }
 li{
 	display: inline-block;
-	width: 13.42857142857143%;/*divide the remaining widthfor seven cols*/
+	width: 13.42857142857143%;/*divide the remaining width for seven cols*/
   margin: 0;
 	text-align: center;
 	vertical-align: middle;
+}
+img{
+	max-width: 100%;
+	max-height: 100%;
 }
 li:first-child{
   width: 6%;/*this field can be less wide*/

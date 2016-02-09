@@ -17,7 +17,7 @@ define(['fillTable','navigation'], function(fillTable, navigation){
     }
     if(tableContainerLength == 0){
       //align center for empty paginator block
-      paginator.style.width = '90px';
+      paginator.style.maxWidth = '90px';
       return;
     }
     var pageAmount = Math.ceil((arr.length / step));
@@ -31,7 +31,7 @@ define(['fillTable','navigation'], function(fillTable, navigation){
 
     paginator.querySelector('.page-1').classList.add('active-page');
     //automatic set width for paginator, depends on amount of items
-    paginator.style.width = pageAmount * 45 + (45*2) + 'px';
+    paginator.style.maxWidth = pageAmount * 45 + (45*2) + 'px';
   }
 
   paginator.onclick = function paginatorOnClick(e){
